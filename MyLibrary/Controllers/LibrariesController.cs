@@ -117,7 +117,7 @@ namespace MyLibrary.Controllers
         }
 
         // GET: Libraries/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (id == null)
             {
@@ -130,7 +130,11 @@ namespace MyLibrary.Controllers
             {
                 return NotFound();
             }
-
+            if (library.CountShelves == 0)
+            {
+                DeleteConfirmed(id);
+                return RedirectToAction(nameof(Index));
+            }
             return View(library);
         }
 

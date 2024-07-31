@@ -20,9 +20,15 @@ namespace MyLibrary.Controllers
         }
 
         // GET: Books
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string category)
         {
-            return View(await _context.Book.ToListAsync());
+            var categories = await _context.Book.Select(s => s.Category).Distinct().ToListAsync();
+            var books = string.IsNullOrEmpty(category) ? await _context.Book.ToListAsync() : await _context.Book.Where(s => s.Category == category).ToListAsync();
+
+            ViewBag.Categories = new SelectList(categories);
+            ViewBag.SelectedCategory = category;
+
+            return View(books);
         }
 
         // GET: Books/Details/5
@@ -67,7 +73,7 @@ namespace MyLibrary.Controllers
                     return View();
                 }
                     var shelf = await _context.Shelf
-                            .Where(s => s.Category == book.Category && s.Width - book.Width > 0 && s.Height - book.Height > 0)
+                            .Where(s => s.Category == book.Category && s.rest - book.Width >= 0 && s.Height - book.Height >= 0)
                             .FirstOrDefaultAsync();
 
                 if (shelf == null)
@@ -75,12 +81,18 @@ namespace MyLibrary.Controllers
                     ModelState.AddModelError("", "אין מספיק מקום יש ליצור מדף חדש");
                     return View(book);
                 }
+                int Rest = shelf.Height - book.Height;
+                if (Rest > 10)
+                {
+                    ViewBag.WarningMessage = $" אם תוסיף את הספר לפה יישאר לך {Rest}ס''מ של רווח פנוי  ";
+                    return View(book);
+                }
 
                 book.ShelfId = shelf.Id; 
 
                 _context.Book.Add(book); 
 
-                shelf.Width -= book.Width; 
+                shelf.rest -= book.Width; 
                 _context.Update(shelf); 
 
                 await _context.SaveChangesAsync(); 

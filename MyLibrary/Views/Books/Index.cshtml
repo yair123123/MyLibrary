@@ -1,22 +1,32 @@
 ﻿@model IEnumerable<MyLibrary.Models.Book>
 
 @{
+    var categories = ViewBag.Categories as SelectList;
+    var selectedCategory = ViewBag.SelectedCategory as string;
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1 class="text-center">ספרים</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary"><i class="fas fa-plus"></i>Create New</a>
 </p>
+<form asp-controller="Books" asp-action="Index" method="get">
+    <select id="categorySelect" name="category" onchange="this.form.submit()">
+        <option value="">@(selectedCategory ?? "All Categories")</option>
+        @foreach (var category in categories)
+        {
+            <option>@category.Text</option>
+        }
+
+    </select>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ShelfId)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Height)
@@ -40,9 +50,6 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ShelfId)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Height)
             </td>
             <td>
@@ -55,9 +62,9 @@
                 @Html.DisplayFor(modelItem => item.setId)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-success">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
             </td>
         </tr>
 }

@@ -7,6 +7,31 @@
 <h1>Create</h1>
 
 <h4>Book</h4>
+
+<script>
+    function confirmAddBook() {
+        const userConfirmed = confirm("האם אתה בטוח שאתה רוצה להוסיף את הספר?");
+        if (userConfirmed) {
+
+            document.getElementById("addBookForm").submit();
+        } else {
+
+            alert("הוספת הספר בוטלה.");
+        }
+    }
+
+    window.onload = function () {
+        const warningMessage = document.getElementById("warningMessage");
+        if (warningMessage) {
+            confirmAddBook();
+        }
+    };
+</script>
+
+    @if (!string.IsNullOrEmpty(ViewBag.WarningMessage))
+    {
+        <div id="warningMessage">@ViewBag.WarningMessage</div>
+    }
 <hr />
 <div class="row">
     <div class="col-md-4">

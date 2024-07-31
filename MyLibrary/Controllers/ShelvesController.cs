@@ -23,13 +23,17 @@ namespace MyLibrary.Controllers
             _context = context;
         }
 
-        // GET: Shelves
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string category)
         {
-            return View(await _context.Shelf.ToListAsync());
+            var categories = await _context.Shelf.Select(s => s.Category).Distinct().ToListAsync();
+            var shelves = string.IsNullOrEmpty(category) ? await _context.Shelf.ToListAsync() : await _context.Shelf.Where(s => s.Category == category).ToListAsync();
+
+            ViewBag.Categories = new SelectList(categories);
+            ViewBag.SelectedCategory = category;
+
+            return View(shelves);
         }
 
-        // GET: Shelves/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -47,16 +51,12 @@ namespace MyLibrary.Controllers
             return View(shelf);
         }
 
-        // GET: Shelves/Create
+       
         public IActionResult Create()
         {
             return View();
         }
 
-
-        // POST: Shelves/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Category,Height,Width")] Shelf shelf)
@@ -69,8 +69,8 @@ namespace MyLibrary.Controllers
                      var libraryis = await _context.Library
                                                 .FirstOrDefaultAsync(l => l.Category == shelf.Category);
                     shelf.LibraryId = libraryis.Id;
-                    shelf.Width = libraryis.width;
-
+                    libraryis.CountShelves += 1;
+                    shelf.rest = shelf.Width;
                     _context.Add(shelf);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
@@ -83,8 +83,6 @@ namespace MyLibrary.Controllers
             }
             return View(shelf);
         }
-
-        // GET: Shelves/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -99,10 +97,6 @@ namespace MyLibrary.Controllers
             }
             return View(shelf);
         }
-
-        // POST: Shelves/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,IdLibrary,Height,Width")] Shelf shelf)
@@ -134,8 +128,6 @@ namespace MyLibrary.Controllers
             }
             return View(shelf);
         }
-
-        // GET: Shelves/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -153,15 +145,18 @@ namespace MyLibrary.Controllers
             return View(shelf);
         }
 
-        // POST: Shelves/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var shelf = await _context.Shelf.FindAsync(id);
+            var name = shelf.Category;
+            var library = await _context.Library
+                           .FirstOrDefaultAsync(l => l.Category == shelf.Category);
             if (shelf != null)
             {
                 _context.Shelf.Remove(shelf);
+                library.CountShelves -= 1;
             }
 
             await _context.SaveChangesAsync();
