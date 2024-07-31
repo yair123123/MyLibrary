@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+
+    <style>
+        .btn-custom {
+            font-size: 1.5rem; /* גודל טקסט גדול יותר */
+            padding: 15px 30px; /* מרווח פנימי גדול יותר */
+            transition: transform 0.2s, box-shadow 0.2s; /* אפקט מעבר */
+        }
+
+            .btn-custom:hover {
+                transform: scale(1.1); /* הגדלה קלה בעת ריחוף */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* צל בעת ריחוף */
+            }
+    </style>
+
+    <div class="container mt-5">
+        <h2 class="text-center">בחר </h2>
+        <div class="btn-group row align-items-center justify-content-center" role="group" aria-label="Basic example">
+            <a asp-area="" asp-controller="Libraries" asp-action="Index" class="btn btn-primary btn-custom col-md-4">ספריות</a>
+            <a asp-area="" asp-controller="Shelves" asp-action="Index" class="btn btn-primary btn-custom col-md-4"> מדפים</a>
+            <a asp-area="" asp-controller="Books" asp-action="Index" class="btn btn-primary btn-custom col-md-4">ספרים</a>
+        </div>
+    </div>
+</div>
