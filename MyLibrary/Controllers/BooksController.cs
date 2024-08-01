@@ -60,7 +60,8 @@ namespace MyLibrary.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Height,Width,Category")] Book book)
+        [HttpPost]
+        public async Task<IActionResult> Create([Bind("Name,Height,Width,Category")] Book book, bool IsConfirmed)
         {
             ModelState.Remove("SetBook");
             ModelState.Remove("shelf");
@@ -72,35 +73,37 @@ namespace MyLibrary.Controllers
                     ModelState.AddModelError(nameof(book.Category), "לא נמצאה ספרייה לקטגוריה זו ");
                     return View();
                 }
-                    var shelf = await _context.Shelf
-                            .Where(s => s.Category == book.Category && s.rest - book.Width >= 0 && s.Height - book.Height >= 0)
-                            .FirstOrDefaultAsync();
+
+                var shelf = await _context.Shelf
+                    .Where(s => s.Category == book.Category && s.rest - book.Width >= 0 && s.Height - book.Height >= 0)
+                    .FirstOrDefaultAsync();
 
                 if (shelf == null)
                 {
                     ModelState.AddModelError("", "אין מספיק מקום יש ליצור מדף חדש");
                     return View(book);
                 }
+
                 int Rest = shelf.Height - book.Height;
-                if (Rest > 10)
+                if (Rest > 10 && !IsConfirmed)
                 {
-                    ViewBag.WarningMessage = $" אם תוסיף את הספר לפה יישאר לך {Rest}ס''מ של רווח פנוי  ";
+                    ViewBag.WarningMessage = $"אם תוסיף את הספר לפה יישאר לך {Rest}  ס''מ של רווח פנוי בגובה";
                     return View(book);
                 }
 
-                book.ShelfId = shelf.Id; 
+                book.ShelfId = shelf.Id;
 
-                _context.Book.Add(book); 
+                _context.Book.Add(book);
+                shelf.CountBooks += 1;
+                shelf.rest -= book.Width;
+                _context.Update(shelf);
 
-                shelf.rest -= book.Width; 
-                _context.Update(shelf); 
+                await _context.SaveChangesAsync();
 
-                await _context.SaveChangesAsync(); 
-
-                return RedirectToAction(nameof(Index)); 
+                return RedirectToAction(nameof(Index));
             }
 
-            return View(book); 
+            return View(book);
         }
 
 
@@ -179,8 +182,13 @@ namespace MyLibrary.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var book = await _context.Book.FindAsync(id);
+            var name = book.Category;
+            var shelf = await _context.Shelf
+                           .FirstOrDefaultAsync(l => l.Category == name);
             if (book != null)
             {
+                shelf.rest += book.Width;
+                shelf.CountBooks -= 1;
                 _context.Book.Remove(book);
             }
 

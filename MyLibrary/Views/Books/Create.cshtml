@@ -4,75 +4,78 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Book</h4>
-
-<script>
-    function confirmAddBook() {
-        const userConfirmed = confirm("האם אתה בטוח שאתה רוצה להוסיף את הספר?");
-        if (userConfirmed) {
-
-            document.getElementById("addBookForm").submit();
-        } else {
-
-            alert("הוספת הספר בוטלה.");
+<head>
+    <meta charset="utf-8">
+    <title>הוסף ספר</title>
+    <script>
+        function confirmAddBook() {
+            const userConfirmed = confirm("האם אתה בטוח שאתה רוצה להוסיף את הספר?");
+            if (userConfirmed) {
+                document.getElementById("isConfirmed").value = "true";
+                document.getElementById("addBookForm").submit();
+            } else {
+                alert("הוספת הספר בוטלה.");
+            }
         }
-    }
 
-    window.onload = function () {
-        const warningMessage = document.getElementById("warningMessage");
-        if (warningMessage) {
-            confirmAddBook();
-        }
-    };
-</script>
+        window.onload = function () {
+            const warningMessage = document.getElementById("warningMessage");
+            if (warningMessage) {
+                confirmAddBook();
+            }
+        };
+    </script>
+</head>
+<body>
+    <h1>הוסף ספר</h1>
 
     @if (!string.IsNullOrEmpty(ViewBag.WarningMessage))
     {
         <div id="warningMessage">@ViewBag.WarningMessage</div>
     }
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div> 
-            <div class="form-group">
-                <label asp-for="Category" class="control-label"></label>
-                <input asp-for="Category" class="form-control" />
-                <span asp-validation-for="Category" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Height" class="control-label"></label>
-                <input asp-for="Height" class="form-control" />
-                <span asp-validation-for="Height" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Width" class="control-label"></label>
-                <input asp-for="Width" class="form-control" />
-                <span asp-validation-for="Width" class="text-danger"></span>
-            </div>
-@*             <div class="form-group">
-                <label asp-for="setId" class="control-label"></label>
-                <input asp-for="setId" class="form-control" />
-                <span asp-validation-for="setId" class="text-danger"></span>
-            </div> *@
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form id="addBookForm" asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Category" class="control-label"></label>
+                    <input asp-for="Category" class="form-control" />
+                    <span asp-validation-for="Category" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Height" class="control-label"></label>
+                    <input asp-for="Height" class="form-control" />
+                    <span asp-validation-for="Height" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Width" class="control-label"></label>
+                    <input asp-for="Width" class="form-control" />
+                    <span asp-validation-for="Width" class="text-danger"></span>
+                </div>
+                <!-- כאן ניצור משתנה שיהיה מוסתר אא"כ המשתשמש יאשר -->
+                <input type="hidden" id="isConfirmed" name="IsConfirmed" value="false">
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+</body>
+</html>

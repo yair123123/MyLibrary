@@ -15,5 +15,7 @@ namespace MyLibrary.Models
         public int Width { get; set; }
         [Display(Name = "מקום שנשאר")]
         public int rest { get; set; }
+        [Display( Name = "מס' ספרים במדף")]
+        public int CountBooks {  get; set; }
     }
 }

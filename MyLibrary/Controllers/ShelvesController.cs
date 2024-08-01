@@ -152,7 +152,7 @@ namespace MyLibrary.Controllers
             var shelf = await _context.Shelf.FindAsync(id);
             var name = shelf.Category;
             var library = await _context.Library
-                           .FirstOrDefaultAsync(l => l.Category == shelf.Category);
+                           .FirstOrDefaultAsync(l => l.Category == name);
             if (shelf != null)
             {
                 _context.Shelf.Remove(shelf);
