@@ -17,5 +17,6 @@ namespace MyLibrary.Data
         public DbSet<MyLibrary.Models.Library> Library { get; set; } = default!;
         public DbSet<MyLibrary.Models.Shelf> Shelf { get; set; } = default!;
         public DbSet<MyLibrary.Models.Book> Book { get; set; } = default!;
+        public DbSet<MyLibrary.Models.SetBook> SetBook { get; set; } = default!;
     }
 }

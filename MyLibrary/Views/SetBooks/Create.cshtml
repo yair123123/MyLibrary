@@ -1,4 +1,4 @@
-﻿@model MyLibrary.Models.Book
+﻿@model MyLibrary.Models.SetBook
 
 @{
     ViewData["Title"] = "Create";
@@ -16,22 +16,6 @@
 
             #ListShelf tbody tr:hover {
                 background-color: #f1f1f1;
-            }
-
-        #ListShelf th {
-            text-align: center;
-
-    </style>
-    <style>
-        #ListShelf {
-            border-collapse: collapse; /* למנוע כפילות גבולות */
-            width: 100%; /* אם תרצה שהטבלה תתפוס את כל רוחב הדף */
-        }
-
-            #ListShelf th, #ListShelf td {
-                border: 1px solid black; /* גבול בין התאים */
-                padding: 8px; /* ריווח פנימי */
-                text-align: center; /* מרכז את הכותרות ואת התוכן */
             }
     </style>
     <meta charset="utf-8">
@@ -51,7 +35,7 @@
         };
 
         function confirmAddBook() {
-            const userConfirmed = confirm("האם אתה בטוח שאתה רוצה להוסיף את הספר?");
+            const userConfirmed = confirm("האם אתה בטוח שאתה רוצה להוסיף את הסט?");
             if (userConfirmed) {
                 document.getElementById("isConfirmed").value = 3;
                 document.getElementById("choiceShelf").value = shelfIdi;
@@ -106,7 +90,7 @@
                 <input type="hidden" id="isConfirmed" name="IsConfirmed" value="1" />
                 <input type="hidden" id="choiceShelf" name="ChoiceShelf" value="1" />
                 <div class="form-group">
-                    <input type="submit" value="הצג מדפים " class="btn btn-primary" />
+                    <input type="submit" value="Create" class="btn btn-primary" />
                 </div>
             </form>
         </div>

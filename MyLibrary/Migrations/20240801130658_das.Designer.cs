@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyLibrary.Data;
 
@@ -10,9 +11,11 @@ using MyLibrary.Data;
 namespace MyLibrary.Migrations
 {
     [DbContext(typeof(MyLibraryContext))]
-    partial class MyLibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20240801130658_das")]
+    partial class das
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,38 +79,6 @@ namespace MyLibrary.Migrations
                     b.ToTable("Library");
                 });
 
-            modelBuilder.Entity("MyLibrary.Models.SetBook", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Height")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ShelfId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Width")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ShelfId");
-
-                    b.ToTable("SetBook");
-                });
-
             modelBuilder.Entity("MyLibrary.Models.Shelf", b =>
                 {
                     b.Property<int>("Id")
@@ -143,17 +114,6 @@ namespace MyLibrary.Migrations
                 });
 
             modelBuilder.Entity("MyLibrary.Models.Book", b =>
-                {
-                    b.HasOne("MyLibrary.Models.Shelf", "shelf")
-                        .WithMany()
-                        .HasForeignKey("ShelfId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("shelf");
-                });
-
-            modelBuilder.Entity("MyLibrary.Models.SetBook", b =>
                 {
                     b.HasOne("MyLibrary.Models.Shelf", "shelf")
                         .WithMany()

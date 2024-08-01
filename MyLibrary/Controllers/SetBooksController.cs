@@ -9,11 +9,11 @@ using MyLibrary.Models;
 
 namespace MyLibrary.Controllers
 {
-    public class BooksController : Controller
+    public class SetBooks : Controller
     {
         private readonly MyLibraryContext _context;
 
-        public BooksController(MyLibraryContext context)
+        public SetBooks(MyLibraryContext context)
         {
             _context = context;
         }
@@ -21,10 +21,10 @@ namespace MyLibrary.Controllers
         // GET: Books
         public IActionResult Index(string category)
         {
-            var categories = _context.Book.Select(s => s.Category).Distinct().ToList();
+            var categories = _context.SetBook.Select(s => s.Category).Distinct().ToList();
             var books = string.IsNullOrEmpty(category)
-                ? _context.Book.ToList()
-                : _context.Book.Where(s => s.Category == category).ToList();
+                ? _context.SetBook.ToList()
+                : _context.SetBook.Where(s => s.Category == category).ToList();
 
             ViewBag.Categories = new SelectList(categories);
             ViewBag.SelectedCategory = category;
@@ -39,7 +39,7 @@ namespace MyLibrary.Controllers
                 return NotFound();
             }
 
-            var book = _context.Book.FirstOrDefault(m => m.Id == id);
+            var book = _context.SetBook.FirstOrDefault(m => m.Id == id);
             if (book == null)
             {
                 return NotFound();
@@ -55,7 +55,7 @@ namespace MyLibrary.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Name,Height,Width,Category")] Book book, int isConfirmed, int choiceShelf)
+        public IActionResult Create([Bind("Name,Height,Width,Category")] SetBook book, int isConfirmed, int choiceShelf)
         {
             ModelState.Remove("SetBook");
             ModelState.Remove("shelf");
@@ -85,7 +85,7 @@ namespace MyLibrary.Controllers
             return View(book);
         }
 
-        private IActionResult HandleInitialConfirmation(Book book, List<Shelf> shelves)
+        private IActionResult HandleInitialConfirmation(SetBook book, List<Shelf> shelves)
         {
             if (!shelves.Any())
             {
@@ -103,7 +103,7 @@ namespace MyLibrary.Controllers
             return View();
         }
 
-        private IActionResult HandleFinalConfirmation(Book book, List<Shelf> shelves, int choiceId)
+        private IActionResult HandleFinalConfirmation(SetBook book, List<Shelf> shelves, int choiceId)
         {
             var chosenShelf = shelves.FirstOrDefault(s => s.Id == choiceId);
             if (chosenShelf == null || !HasSufficientSpace(chosenShelf, book))
@@ -123,20 +123,20 @@ namespace MyLibrary.Controllers
             chosenShelf.rest -= book.Width;
 
             _context.Update(chosenShelf);
-            _context.Book.Add(book);
+            _context.SetBook.Add(book);
             _context.SaveChanges();
 
             return RedirectToAction(nameof(Index));
         }
 
-        private IActionResult HandleFinalConfirmationEnd(Book book, Shelf chosenShelf)
+        private IActionResult HandleFinalConfirmationEnd(SetBook book, Shelf chosenShelf)
         {
             book.ShelfId = chosenShelf.Id;
             chosenShelf.CountBooks++;
             chosenShelf.rest -= book.Width;
 
             _context.Update(chosenShelf);
-            _context.Book.Add(book);
+            _context.SetBook.Add(book);
             _context.SaveChanges();
 
             return RedirectToAction(nameof(Index));
@@ -160,7 +160,7 @@ namespace MyLibrary.Controllers
             };
         }
 
-        private bool HasSufficientSpace(Shelf shelf, Book book)
+        private bool HasSufficientSpace(Shelf shelf, SetBook book)
         {
             return shelf.rest >= book.Width && shelf.Height >= book.Height;
         }

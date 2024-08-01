@@ -51,7 +51,7 @@ namespace MyLibrary.Controllers
             return View(shelf);
         }
 
-       
+
         public IActionResult Create()
         {
             return View();
@@ -59,15 +59,16 @@ namespace MyLibrary.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Category,Height,Width")] Shelf shelf)
+        public async Task<IActionResult> Create([Bind("Category,Height,Width")] Shelf shelf)
         {
             ModelState.Remove("library");
+            ModelState.Remove("mode");
             if (ModelState.IsValid)
             {
                 if (_context.Library.Any(b => b.Category == shelf.Category))
                 {
-                     var libraryis = await _context.Library
-                                                .FirstOrDefaultAsync(l => l.Category == shelf.Category);
+                    var libraryis = await _context.Library
+                                               .FirstOrDefaultAsync(l => l.Category == shelf.Category);
                     shelf.LibraryId = libraryis.Id;
                     libraryis.CountShelves += 1;
                     shelf.rest = shelf.Width;
@@ -141,10 +142,22 @@ namespace MyLibrary.Controllers
             {
                 return NotFound();
             }
+            if (shelf.CountBooks == 0)
+            {
+                var name = shelf.Category;
+                var library = await _context.Library
+               .FirstOrDefaultAsync(l => l.Category == name);
+
+                _context.Shelf.Remove(shelf);
+
+                library.CountShelves -= 1;
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
 
             return View(shelf);
         }
-
+        
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

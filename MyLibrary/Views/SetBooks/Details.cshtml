@@ -1,14 +1,13 @@
-﻿@model MyLibrary.Models.Book
+﻿@model MyLibrary.Models.SetBook
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Details";
 }
 
-<h1>נמצאו ספרים במדף זה</h1>
+<h1>Details</h1>
 
-<h3>האם אתה בטוח שברצונך למחוק את המדף (כולל הספרים)</h3>
 <div>
-    <h4>Book</h4>
+    <h4>SetBook</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -18,10 +17,10 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ShelfId)
+            @Html.DisplayNameFor(model => model.shelf)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ShelfId)
+            @Html.DisplayFor(model => model.shelf.Id)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Height)
@@ -41,12 +40,9 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Category)
         </dd>
-
     </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
 </div>

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyLibrary.Models
 {
@@ -17,5 +18,7 @@ namespace MyLibrary.Models
         public int rest { get; set; }
         [Display( Name = "מס' ספרים במדף")]
         public int CountBooks {  get; set; }
+        [NotMapped]
+        public string Mode {  get; set; }
     }
 }

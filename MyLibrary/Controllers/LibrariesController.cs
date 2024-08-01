@@ -49,9 +49,7 @@ namespace MyLibrary.Controllers
             return View();
         }
 
-        // POST: Libraries/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Category,width")] Library library)
@@ -64,8 +62,6 @@ namespace MyLibrary.Controllers
             }
             return View(library);
         }
-
-        // GET: Libraries/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,9 +77,7 @@ namespace MyLibrary.Controllers
             return View(library);
         }
 
-        // POST: Libraries/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Category,weight")] Library library)

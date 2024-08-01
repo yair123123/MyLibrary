@@ -1,4 +1,4 @@
-﻿@model MyLibrary.Models.Book
+﻿@model MyLibrary.Models.SetBook
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,7 +6,7 @@
 
 <h1>Edit</h1>
 
-<h4>Book</h4>
+<h4>SetBook</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -17,6 +17,11 @@
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShelfId" class="control-label"></label>
+                <select asp-for="ShelfId" class="form-control" asp-items="ViewBag.ShelfId"></select>
+                <span asp-validation-for="ShelfId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Height" class="control-label"></label>
@@ -30,8 +35,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="Category" class="control-label"></label>
-                <input asp-for="Category" class="form-control" readonly />
-                <span class="text-muted">שדה זה אינו ניתן לעריכה</span>
+                <input asp-for="Category" class="form-control" />
+                <span asp-validation-for="Category" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

@@ -16,7 +16,5 @@ namespace MyLibrary.Models
 
         [Display(Name = "קטגוריה")]
         public string Category { get; set; }
-        public int? setId { get; set; }
-        public SetBook? SetBook { get; set; }
     }
 }

@@ -37,10 +37,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Category)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.setId)
-            </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -59,9 +55,6 @@
                 @Html.DisplayFor(modelItem => item.Category)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.setId)
-            </td>
-            <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-success">Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
@@ -70,3 +63,6 @@
 }
     </tbody>
 </table>
+<div class="row">
+<a asp-controller="SetBooks" asp-action="Index" class="btn btn-primary"> אם ברצונך לעבור לסטים נא ללחוץ כאן </a>
+</div>
