@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Create";
-    var idaa = ViewBag.chosenShelf ?? -1; // במקרה שלא נבחר מדף, נגדיר ערך ברירת מחדל של -1
+    var idaa = ViewBag.chosenShelf ?? -1; 
     var shelves = ViewBag.Shelves as List<Shelf>;
     var formType = ViewBag.FormType as bool? ?? false;
 }
@@ -19,7 +19,7 @@
             }
     </style>
     <meta charset="utf-8">
-    <title>הוסף ספר</title>
+    <title>הוסף סט</title>
     <script type="text/javascript">
         let shelfIdi = @idaa;  // הכנסת הערך מ-ViewBag.chosenShelf למשתנה גלובלי ב-JavaScript
 
