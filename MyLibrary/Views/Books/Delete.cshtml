@@ -4,9 +4,8 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>נמצאו ספרים במדף זה</h1>
 
-<h3>האם אתה בטוח שברצונך למחוק את המדף (כולל הספרים)</h3>
+<h3>האם אתה בטוח שברצונך למחוק את הספר)</h3>
 <div>
     <h4>Book</h4>
     <hr />
@@ -47,6 +46,6 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index" class="btn btn-primary">חזרה לרשימה </a>
     </form>
 </div>

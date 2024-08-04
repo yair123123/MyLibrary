@@ -19,13 +19,13 @@ namespace MyLibrary.Controllers
             _context = context;
         }
 
-        // GET: Libraries
+
         public async Task<IActionResult> Index()
         {
             return View(await _context.Library.ToListAsync());
         }
 
-        // GET: Libraries/Details/5
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -43,7 +43,6 @@ namespace MyLibrary.Controllers
             return View(library);
         }
 
-        // GET: Libraries/Create
         public IActionResult Create()
         {
             return View();
@@ -56,6 +55,11 @@ namespace MyLibrary.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (LibraryExistsCategory(library.Category))
+                {
+                    ModelState.AddModelError(nameof(library.Category), "יש כבר קטגוריה בשם זה \n יש לבחור שם אחר!");
+                    return View(library);
+                }
                 _context.Add(library);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -96,7 +100,7 @@ namespace MyLibrary.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LibraryExists(library.Id))
+                    if (!LibraryExistsID(library.Id))
                     {
                         return NotFound();
                     }
@@ -110,7 +114,7 @@ namespace MyLibrary.Controllers
             return View(library);
         }
 
-        // GET: Libraries/Delete/5
+
         public async Task<IActionResult> Delete(int id)
         {
             if (id == null)
@@ -132,7 +136,7 @@ namespace MyLibrary.Controllers
             return View(library);
         }
 
-        // POST: Libraries/Delete/5
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -143,13 +147,16 @@ namespace MyLibrary.Controllers
                 _context.Library.Remove(library);
             }
 
-            await _context.SaveChangesAsync();
+            _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool LibraryExists(int id)
+        private bool LibraryExistsID(int id)
         {
             return _context.Library.Any(e => e.Id == id);
+        }private bool LibraryExistsCategory(string Category)
+        {
+            return _context.Library.Any(e => e.Category == Category);
         }
     }
 }

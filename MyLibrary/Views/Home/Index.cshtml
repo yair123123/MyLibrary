@@ -1,22 +1,24 @@
 ﻿<style>
     .btn-custom {
-        font-size: 1.5rem; /* גודל טקסט גדול יותר */
-        padding: 15px 30px; /* מרווח פנימי גדול יותר */
-        transition: transform 0.2s, box-shadow 0.2s; /* אפקט מעבר */
-        margin: 10px; /* מרווח חיצוני בין הכפתורים */
+        font-size: 1.5rem;
+        padding: 15px 30px;
+        transition: transform 0.2s, box-shadow 0.2s;
+        margin: 10px;
     }
 
-        .btn-custom:hover {
-            transform: scale(1.1); /* הגדלה קלה בעת ריחוף */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* צל בעת ריחוף */
-        }
+    .btn-custom:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
 </style>
 
-<div class="container mt-5">
-    <div class="btn-group row align-items-center justify-content-center" role="group" aria-label="Basic example">
-    <h2 class="text-center">בחר </h2>
-        <a asp-area="" asp-controller="Libraries" asp-action="Index" class="btn btn-primary btn-custom col-md-4">ספריות</a>
-        <a asp-area="" asp-controller="Shelves" asp-action="Index" class="btn btn-primary btn-custom col-md-4">מדפים</a>
-        <a asp-area="" asp-controller="Books" asp-action="Index" class="btn btn-primary btn-custom col-md-4">ספרים</a>
+<div class="container mt-lg-1">
+    <div class="text-center mb-4">
+        <h2>ברוך הבא לאוצר הספרים </h2>
+    </div>
+    <div class="btn-group-vertical btn-group-lg w-100" role="group" aria-label="Basic example">
+        <a asp-area="" asp-controller="Libraries" asp-action="Index" class="btn btn-primary btn-custom">ספריות</a>
+        <a asp-area="" asp-controller="Shelves" asp-action="Index" class="btn btn-primary btn-custom">מדפים</a>
+        <a asp-area="" asp-controller="Books" asp-action="Index" class="btn btn-primary btn-custom">ספרים</a>
     </div>
 </div>

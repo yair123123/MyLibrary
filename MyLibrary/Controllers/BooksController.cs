@@ -17,8 +17,6 @@ namespace MyLibrary.Controllers
         {
             _context = context;
         }
-
-        // GET: Books
         public IActionResult Index(string category)
         {
             var categories = _context.Book.Select(s => s.Category).Distinct().ToList();
@@ -182,12 +180,14 @@ namespace MyLibrary.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,Name,ShelfId,Height,Width,Category,setId")] Book book)
+        public IActionResult Edit(int id, [Bind("Name,Id,Height,Width,Category,ShelfId")] Book book)
         {
             if (id != book.Id)
             {
                 return NotFound();
             }
+            ModelState.Remove("SetBook");
+            ModelState.Remove("shelf");
 
             if (ModelState.IsValid)
             {

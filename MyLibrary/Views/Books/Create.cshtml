@@ -106,15 +106,13 @@
                 <input type="hidden" id="isConfirmed" name="IsConfirmed" value="1" />
                 <input type="hidden" id="choiceShelf" name="ChoiceShelf" value="1" />
                 <div class="form-group">
-                    <input type="submit" value="הצג מדפים " class="btn btn-primary" />
+                    <input type="submit" value="צור" class="btn btn-primary mr-2" />
+                    <a asp-action="Index" class="btn btn-secondary">חזרה לרשימה</a>
                 </div>
             </form>
         </div>
     </div>
 
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>
 
     @if (shelves != null && shelves.Count > 0)
     {
